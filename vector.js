@@ -10,6 +10,11 @@ var format = require('format-string'),
  * @constructor
  */
 function Vector(x, y, z) {
+
+    if (!(this instanceof Vector)) {
+        return new Vector(1, 2, 3);
+    }
+
     /**
      * @type {number}
      */
@@ -70,7 +75,6 @@ Vector.prototype = {
         this.z += z;
         return this;
     },
-
     /**
      * @param x
      * @param y
@@ -83,7 +87,6 @@ Vector.prototype = {
         this.z -= z;
         return this;
     },
-
     /**
      * @param x
      * @param y
@@ -96,7 +99,6 @@ Vector.prototype = {
         this.z *= z;
         return this;
     },
-
     /**
      * @param x
      * @param y
@@ -174,7 +176,7 @@ Vector.prototype = {
     as: function(order) {
         switch (order.length) {
             case 1:
-                return this[order[0]];
+                return new Vector(this[order[0]]);
                 break;
             case 2:
                 return new Vector(
@@ -196,7 +198,6 @@ Vector.prototype = {
                     { order: order }
                 );
         }
-        return new Vector(this.x, this.x, this.x)
     }
 };
 

@@ -10,6 +10,9 @@ describe 'Vector', ->
   it 'typeof is function', ->
     (typeof Vector).should.equal('function')
 
+  it 'can be used as function', ->
+    Vector(1, 2, 3).should.deep.equal(v)
+
   it 'default constructor init. by 0', ->
     new Vector().should.deep.equal(new Vector(0, 0, 0))
 
@@ -66,9 +69,30 @@ describe 'Vector', ->
     it 'toString()', ->
       new Vector(1, 2, 3).toString().should.equal('[1, 2, 3]')
 
-  describe 'as() -> GLSL-like stuff', ->
-    it 'as()', ->
-      v.as('xyz').should.deep.equal(new Vector(v.x, v.y, v.z))
-    it 'throws', ->
+  describe 'as(order) -> GLSL-like stuff', ->
+    set = ['x', 'y', 'z']
+
+    it 'as(order) -> 1 argument', ->
+      for i in [0...set.length]
+        command = set[i]
+        expected = new Vector(v[set[i]])
+        v.as(command).should.deep.equal(expected)
+
+    it 'as(order) -> 2 arguments', ->
+      for i in [0...set.length]
+        for j in [0...set.length]
+            command = set[i] + set[j]
+            expected = new Vector(v[set[i]], v[set[j]])
+            v.as(command).should.deep.equal(expected)
+
+    it 'as(order) -> 3 arguments', ->
+      for i in [0...set.length]
+        for j in [0...set.length]
+          for k in [0...set.length]
+            command = set[i] + set[j] + set[k]
+            expected = new Vector(v[set[i]], v[set[j]], v[set[k]])
+            v.as(command).should.deep.equal(expected)
+
+    it 'throws otherwise', ->
       f = () => v.as('error')
       f.should.throw()

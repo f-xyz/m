@@ -3,11 +3,22 @@
 var Vector = require('./vector');
 
 /**
- * @param params
+ * @param {{
+ *  mass: number,
+ *  position: Vector,
+ *  velocity: Vector,
+ *  acceleration: Vector
+ * }} params
  * @constructor
  */
 function Solid(params) {
+
+    if (!(this instanceof Solid)) {
+        return new Solid(params);
+    }
+
     params = params || {};
+
     /**
      * @type {number}
      */
@@ -25,5 +36,16 @@ function Solid(params) {
      */
     this.acceleration = params.acceleration || new Vector(0, 0, 0);
 }
+
+Solid.prototype = {
+    clone: function() {
+        return new Solid({
+            mass: this.mass,
+            position: this.position.clone(),
+            velocity: this.velocity.clone(),
+            acceleration: this.acceleration.clone()
+        });
+    }
+};
 
 module.exports = Solid;
