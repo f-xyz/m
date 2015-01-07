@@ -1,0 +1,7 @@
+node_modules
+.idea
+coverage
+test/*.js
+test/*.map
+gulpfile.js
+gulpfile.map
