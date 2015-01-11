@@ -67,7 +67,7 @@ describe 'Vector', ->
     it 'toArray()', ->
       new Vector(1, 2, 3).toArray().should.deep.equal([1, 2, 3])
     it 'toString()', ->
-      new Vector(1, 2, 3).toString().should.equal('[1, 2, 3]')
+      new Vector(1.23, 2, 3).toString().should.equal('[1.23, 2, 3]')
 
   describe 'as(order) -> GLSL-like stuff', ->
     set = ['x', 'y', 'z']

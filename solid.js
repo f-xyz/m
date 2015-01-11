@@ -4,10 +4,10 @@ var Vector = require('./vector');
 
 /**
  * @param {{
- *  mass: number,
- *  position: Vector,
- *  velocity: Vector,
- *  acceleration: Vector
+ *  mass: number?,
+ *  position: Vector?,
+ *  velocity: Vector?,
+ *  acceleration: Vector?
  * }} params
  * @constructor
  */
@@ -24,6 +24,10 @@ function Solid(params) {
      */
     this.mass = params.mass || 1;
     /**
+     * @type {number}
+     */
+    this.radius = params.radius || 0;
+    /**
      * @type {Vector}
      */
     this.position = params.position || new Vector(0, 0, 0);
@@ -38,9 +42,13 @@ function Solid(params) {
 }
 
 Solid.prototype = {
+    /**
+     * @returns {Solid}
+     */
     clone: function() {
         return new Solid({
             mass: this.mass,
+            radius: this.radius,
             position: this.position.clone(),
             velocity: this.velocity.clone(),
             acceleration: this.acceleration.clone()

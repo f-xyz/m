@@ -9,6 +9,7 @@ describe 'Solid', ->
   beforeEach () ->
     s = new Solid({
       mass: 10,
+      radius: 0,
       position: new Vector(),
       velocity: new Vector(),
       acceleration: new Vector()
@@ -23,6 +24,7 @@ describe 'Solid', ->
   it 'default constructor init. by 0 but mass 1', ->
     (new Solid()).should.deep.equal(new Solid({
       mass: 1
+      radius: 0,
       position: new Vector(),
       velocity: new Vector(),
       acceleration: new Vector()
@@ -31,6 +33,7 @@ describe 'Solid', ->
   it 'clone()', ->
     clone = s.clone()
     clone.mass = 111
+    clone.radius = 222;
     clone.position.set(1, 1, 1)
     clone.velocity.set(2, 2, 2)
     clone.acceleration.set(3, 3, 3)

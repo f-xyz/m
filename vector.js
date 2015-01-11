@@ -1,6 +1,6 @@
 /// <reference path="typings/node/node.d.ts" />
 
-var format = require('format-string'),
+var format = require('string-format-js'),
     sqrt = Math.sqrt;
 
 /**
@@ -165,7 +165,7 @@ Vector.prototype = {
      * @returns {string}
      */
     toString: function() {
-        return format('[:x, :y, :z]', this);
+        return '[%d, %d, %d]'.format(this.x, this.y, this.z);
     },
     /**
      * GLSL-line stuff.
@@ -177,26 +177,20 @@ Vector.prototype = {
         switch (order.length) {
             case 1:
                 return new Vector(this[order[0]]);
-                break;
             case 2:
                 return new Vector(
                     this[order[0]],
                     this[order[1]]
                 )
-                break;
             case 3:
                 return new Vector(
                     this[order[0]],
                     this[order[1]],
                     this[order[2]]
                 );
-                break;
             default:
-                throw format(
-                    'Invalid order \':order\'. ' +
-                    'Use .as(\'xxx\'), .as(\'xyz\'), .as(\'zyx\'), etc.',
-                    { order: order }
-                );
+                throw   'Invalid order \'' + order + '\'. ' +
+                        'Use .as(\'xxx\'), .as(\'xyz\'), .as(\'zyx\'), etc.';
         }
     }
 };
