@@ -1,169 +1,112 @@
 /// <reference path="typings/node/node.d.ts" />
 
-var format = require('string-format-js'),
-    sqrt = Math.sqrt;
+var Class = require('better-inherits').Class,
+    format = require('string-format-js'),
+    sqrt = Math.sqrt,
+    sqr = function(x) { return x * x }
+;
 
-/**
- * @param x
- * @param y
- * @param z
- * @constructor
- */
-function Vector(x, y, z) {
-
-    if (!(this instanceof Vector)) {
-        return new Vector(1, 2, 3);
-    }
-
-    /**
-     * @type {number}
-     */
-    this.x = x || 0;
-    /**
-     * @type {number}
-     */
-    this.y = y || 0;
-    /**
-     * @type {number}
-     */
-    this.z = z || 0;
-}
-
-Vector.prototype = {
-    /**
-     *
-     * @param x
-     * @param y
-     * @param z
-     * @returns {Vector}
-     */
+var Vector = new Class({
+    constructor: function(x, y, z) {
+        if (!(this instanceof Vector)) {
+            return new Vector(x, y, z);
+        }
+        this.x = x || 0;
+        this.y = y || 0;
+        this.z = z || 0;
+    },
     set: function(x, y, z) {
         this.x = x;
         this.y = y;
         this.z = z;
         return this;
     },
-    /**
-     * @returns {Vector}
-     */
     clone: function() {
         return new Vector(this.x, this.y, this.z);
     },
-    /**
-     * @returns {number}
-     */
     length: function() {
         return sqrt(this.x*this.x + this.y*this.y + this.z*this.z);
     },
-    /**
-     * @returns {Vector}
-     */
+    distanceTo: function(v) {
+        return sqrt(
+            sqr(v.x - this.x) +
+            sqr(v.y - this.y) +
+            sqr(v.z - this.z)
+        );
+    },
     normalize: function() {
         var length = this.length();
-        this.div(length, length, length);
-        return this;
+        return new Vector(
+            this.x / length,
+            this.y / length,
+            this.z / length
+        );
     },
-    /**
-     * @param x
-     * @param y
-     * @param z
-     * @returns {Vector}
-     */
     add: function(x, y, z) {
-        this.x += x;
-        this.y += y;
-        this.z += z;
-        return this;
+        return new Vector(
+            this.x + x,
+            this.y + y,
+            this.z + z
+        );
     },
-    /**
-     * @param x
-     * @param y
-     * @param z
-     * @returns {Vector}
-     */
     sub: function(x, y, z) {
-        this.x -= x;
-        this.y -= y;
-        this.z -= z;
-        return this;
+        return new Vector(
+            this.x - x,
+            this.y - y,
+            this.z - z
+        );
     },
-    /**
-     * @param x
-     * @param y
-     * @param z
-     * @returns {Vector}
-     */
     mul: function(x, y, z) {
-        this.x *= x;
-        this.y *= y;
-        this.z *= z;
-        return this;
+        return new Vector(
+            this.x * x,
+            this.y * y,
+            this.z * z
+        );
     },
-    /**
-     * @param x
-     * @param y
-     * @param z
-     * @returns {Vector}
-     */
     div: function(x, y, z) {
-        this.x /= x;
-        this.y /= y;
-        this.z /= z;
-        return this;
+        return new Vector(
+            this.x / x,
+            this.y / y,
+            this.z / z
+        );
     },
-    /**
-     * @param d
-     * @returns {Vector}
-     */
+
     scale: function(d) {
-        this.x *= d;
-        this.y *= d;
-        this.z *= d;
-        return this;
+        return new Vector(
+            this.x * d,
+            this.y * d,
+            this.z * d
+        );
     },
-    /**
-     * @returns {Vector}
-     */
-    invert: function() {
-        this.scale(-1);
-        return this;
+    invert: function(limit) {
+        limit = limit || 0;
+        return new Vector(
+            limit-this.x,
+            limit-this.y,
+            limit-this.z
+        );
     },
-    /**
-     * @param {Vector} v
-     * @returns {Vector}
-     */
+
     addVector: function(v) {
-        this.x += v.x;
-        this.y += v.y;
-        this.z += v.z;
-        return this;
+        return new Vector(
+            this.x + v.x,
+            this.y + v.y,
+            this.z + v.z
+        );
     },
-    /**
-     * @param {Vector} v
-     * @returns {Vector}
-     */
     subVector: function(v) {
-        this.x -= v.x;
-        this.y -= v.y;
-        this.z -= v.z;
-        return this;
+        return new Vector(
+            this.x - v.x,
+            this.y - v.y,
+            this.z - v.z
+        );
     },
-    /**
-     * @param {Vector} v
-     * @returns {number}
-     */
     dot: function(v) {
         return this.x*v.x + this.y*v.y + this.z*v.z
     },
-    /**
-     * @returns {number[]}
-     */
     toArray: function() {
         return [this.x, this.y, this.z];
     },
-    /**
-     * @returns {string}
-     */
     toString: function() {
         return '[%d, %d, %d]'.format(this.x, this.y, this.z);
     },
@@ -181,7 +124,7 @@ Vector.prototype = {
                 return new Vector(
                     this[order[0]],
                     this[order[1]]
-                )
+                );
             case 3:
                 return new Vector(
                     this[order[0]],
@@ -189,10 +132,10 @@ Vector.prototype = {
                     this[order[2]]
                 );
             default:
-                throw   'Invalid order \'' + order + '\'. ' +
-                        'Use .as(\'xxx\'), .as(\'xyz\'), .as(\'zyx\'), etc.';
+                throw 'Invalid order \'' + order + '\'. ' +
+                      'Use .as(\'xxx\'), .as(\'xyz\'), .as(\'zyx\'), etc.';
         }
     }
-};
+});
 
 module.exports = Vector;

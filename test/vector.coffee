@@ -15,6 +15,7 @@ describe 'Vector', ->
 
   it 'default constructor init. by 0', ->
     new Vector().should.deep.equal(new Vector(0, 0, 0))
+    new Vector().should.deep.equal(new Vector(0, 0, 0))
 
   it 'set(x, y, z)', ->
     v.set(3, 2, 1)
@@ -25,47 +26,57 @@ describe 'Vector', ->
     v.should.not.deep.equal(clone)
 
   describe 'scalar functions', ->
+
     it 'length()', ->
       v.length().should.equal(sqrt(14))
+
+    it 'distanceTo()', ->
+      v.distanceTo(new Vector(0, 0, 0)).should.equal(sqrt(1+4+9))
+
     it 'normalize()', ->
       v.set(1, 1, 1)
       k = 1/sqrt(3)
       v.normalize().should.deep.equal(new Vector(k, k, k))
+
     it 'dot()', ->
       v = new Vector(1, 1, 1)
       v.dot(new Vector(1, 2, 3)).should.equal(6)
+
     it 'add(x, y, z)', ->
-      v.add(10, 20, 30)
-      v.should.deep.equal(new Vector(11, 22, 33))
+      v.add(10, 20, 30).should.deep.equal(new Vector(11, 22, 33))
+
     it 'sub(x, y, z)', ->
-      v.sub(1, 2, 3)
-      v.should.deep.equal(new Vector(0, 0, 0))
+      v.sub(1, 2, 3).should.deep.equal(new Vector(0, 0, 0))
+
     it 'mul(x, y, z)', ->
-      v.mul(10, 20, 30)
-      v.should.deep.equal(new Vector(10, 40, 90))
+      v.mul(10, 20, 30).should.deep.equal(new Vector(10, 40, 90))
+
     it 'div(x, y, z)', ->
-      v.sub(1, 2, 3)
-      v.should.deep.equal(new Vector())
+      v.div(1, 2, 3).should.deep.equal(new Vector(1, 1, 1))
+
     it 'scale(d)', ->
       v = new Vector(1, 2, 3)
       v.scale(2).should.deep.equal(new Vector(2, 4, 6))
+
     it 'invert()', ->
       v = new Vector(1, 2, 3)
       v.invert().should.deep.equal(new Vector(-1, -2, -3))
 
   describe 'vector functions', ->
+
     it 'addVector(v)', ->
       v = new Vector(1, 2, 3)
-      v.addVector(v)
-      v.should.deep.equal(new Vector(2, 4, 6))
+      v.addVector(v).should.deep.equal(new Vector(2, 4, 6))
+
     it 'subVector(v)', ->
       v = new Vector(1, 2, 3)
-      v.subVector(v)
-      v.should.deep.equal(new Vector(0, 0, 0))
+      v.subVector(v).should.deep.equal(new Vector(0, 0, 0))
 
   describe 'conversion', ->
+
     it 'toArray()', ->
       new Vector(1, 2, 3).toArray().should.deep.equal([1, 2, 3])
+
     it 'toString()', ->
       new Vector(1.23, 2, 3).toString().should.equal('[1.23, 2, 3]')
 
