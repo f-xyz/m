@@ -24,8 +24,14 @@ var Vector = new Class({
     clone: function() {
         return new Vector(this.x, this.y, this.z);
     },
+
+    // scalar functions ///////////////////////////////////////////////////////
+
     length: function() {
         return sqrt(this.x*this.x + this.y*this.y + this.z*this.z);
+    },
+    dot: function(v) {
+        return this.x*v.x + this.y*v.y + this.z*v.z
     },
     distanceTo: function(v) {
         return sqrt(
@@ -42,77 +48,65 @@ var Vector = new Class({
             this.z / length
         );
     },
-    add: function(x, y, z) {
-        return new Vector(
-            this.x + x,
-            this.y + y,
-            this.z + z
-        );
-    },
-    sub: function(x, y, z) {
-        return new Vector(
-            this.x - x,
-            this.y - y,
-            this.z - z
-        );
-    },
-    mul: function(x, y, z) {
-        return new Vector(
-            this.x * x,
-            this.y * y,
-            this.z * z
-        );
-    },
-    div: function(x, y, z) {
-        return new Vector(
-            this.x / x,
-            this.y / y,
-            this.z / z
-        );
-    },
+
+    //add: function(x, y, z) {
+    //    return new Vector(this.x + x, this.y + y, this.z + z);
+    //},
+    //sub: function(x, y, z) {
+    //    return new Vector(this.x - x, this.y - y, this.z - z);
+    //},
+    //mul: function(x, y, z) {
+    //    return new Vector(this.x * x, this.y * y, this.z * z);
+    //},
+    //div: function(x, y, z) {
+    //    return new Vector(this.x / x, this.y / y, this.z / z);
+    //},
 
     scale: function(d) {
-        return new Vector(
-            this.x * d,
-            this.y * d,
-            this.z * d
-        );
+        return new Vector(this.x * d, this.y * d, this.z * d);
     },
     invert: function(limit) {
         limit = limit || 0;
+        return new Vector(limit - this.x, limit - this.y, limit - this.z);
+    },
+
+    // vector functions ///////////////////////////////////////////////////////
+
+    addVector: function(v) {
+        return new Vector(this.x + v.x, this.y + v.y, this.z + v.z);
+    },
+    subVector: function(v) {
+        return new Vector(this.x - v.x, this.y - v.y, this.z - v.z);
+    },
+    cross: function(v) {
         return new Vector(
-            limit-this.x,
-            limit-this.y,
-            limit-this.z
+            this.y*v.z - this.z*v.y,
+            this.z*v.x - this.x*v.z,
+            this.x*v.y - this.y*v.x
+        );
+    },
+    mix: function(v, t) {
+        return new Vector(
+            this.x + t*(v.x - this.x),
+            this.y + t*(v.y - this.y),
+            this.z + t*(v.z - this.z)
         );
     },
 
-    addVector: function(v) {
-        return new Vector(
-            this.x + v.x,
-            this.y + v.y,
-            this.z + v.z
-        );
-    },
-    subVector: function(v) {
-        return new Vector(
-            this.x - v.x,
-            this.y - v.y,
-            this.z - v.z
-        );
-    },
-    dot: function(v) {
-        return this.x*v.x + this.y*v.y + this.z*v.z
-    },
+    // conversion functions ///////////////////////////////////////////////////
+
     toArray: function() {
         return [this.x, this.y, this.z];
     },
     toString: function() {
         return '[%d, %d, %d]'.format(this.x, this.y, this.z);
     },
+
+    // other functions ////////////////////////////////////////////////////////
+
     /**
-     * GLSL-line stuff.
-     * Use .as('xxx'), .as('xyz'), .as(zyx), etc.
+     * GLSL-like stuff.
+     * Use .as('xxx'), .as('xyz'), .as('zyx'), etc.
      * @param {string} order
      * @returns {Vector}
      */

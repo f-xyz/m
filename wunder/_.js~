@@ -20,6 +20,21 @@
                this.y <= box.y + box.h;
     };
     
+/**
+     * Transition.
+     * @param {Point} to
+     * @param {Number} value 0..1
+     * @returns {Point} New instance.
+     */
+    Point.prototype.transition = function(to, value) {
+        this.x = this.x + (to.x - this.x) * value;
+        this.y = this.y + (to.y - this.y) * value;
+
+        return this;
+    };    
+    
+    
+    
     /**
      * World -> view.
      * @param {Point} pt

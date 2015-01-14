@@ -24,6 +24,7 @@ function step(s, dt) {
         s.velocity.y + s.acceleration.y*dt,
         s.velocity.z + s.acceleration.z*dt
     );
+
     return new Solid({
         mass: s.mass,
         position: newPosition,
@@ -41,7 +42,7 @@ function gravity(s, d, G) {
     var r = s.position.distanceTo(d.position);
     var A = G * d.mass / (r*r);
     var dir = d.position.sub(s.position);
-    var newAcceleration = dir.div(A, A, A);
+    var newAcceleration = dir.scale(1/A);
 
     return new Solid({
         mass: s.mass,
@@ -65,6 +66,5 @@ function gravityCowel(s, d, G) {
         acceleration: s.acceleration
     });
 }
-
 
 module.exports = { step: step, gravity: gravity };

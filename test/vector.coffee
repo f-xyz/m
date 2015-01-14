@@ -7,17 +7,16 @@ describe 'Vector', ->
 
   beforeEach () -> v = new Vector(1, 2, 3)
 
-  it 'typeof is function', ->
+  it 'should be function', ->
     (typeof Vector).should.equal('function')
 
   it 'can be used as function', ->
     Vector(1, 2, 3).should.deep.equal(v)
 
-  it 'default constructor init. by 0', ->
-    new Vector().should.deep.equal(new Vector(0, 0, 0))
+  it 'default constructor should init. x, y and z by 0 ', ->
     new Vector().should.deep.equal(new Vector(0, 0, 0))
 
-  it 'set(x, y, z)', ->
+  it 'set(x, y, z) mutates the instance', ->
     v.set(3, 2, 1)
     v.should.deep.equal(new Vector(3, 2, 1))
 
@@ -34,25 +33,25 @@ describe 'Vector', ->
       v.distanceTo(new Vector(0, 0, 0)).should.equal(sqrt(1+4+9))
 
     it 'normalize()', ->
-      v.set(1, 1, 1)
       k = 1/sqrt(3)
+      v.set(1, 1, 1)
       v.normalize().should.deep.equal(new Vector(k, k, k))
 
     it 'dot()', ->
       v = new Vector(1, 1, 1)
       v.dot(new Vector(1, 2, 3)).should.equal(6)
 
-    it 'add(x, y, z)', ->
-      v.add(10, 20, 30).should.deep.equal(new Vector(11, 22, 33))
-
-    it 'sub(x, y, z)', ->
-      v.sub(1, 2, 3).should.deep.equal(new Vector(0, 0, 0))
-
-    it 'mul(x, y, z)', ->
-      v.mul(10, 20, 30).should.deep.equal(new Vector(10, 40, 90))
-
-    it 'div(x, y, z)', ->
-      v.div(1, 2, 3).should.deep.equal(new Vector(1, 1, 1))
+#    it 'add(x, y, z)', ->
+#      v.add(10, 20, 30).should.deep.equal(new Vector(11, 22, 33))
+#
+#    it 'sub(x, y, z)', ->
+#      v.sub(1, 2, 3).should.deep.equal(new Vector(0, 0, 0))
+#
+#    it 'mul(x, y, z)', ->
+#      v.mul(10, 20, 30).should.deep.equal(new Vector(10, 40, 90))
+#
+#    it 'div(x, y, z)', ->
+#      v.div(1, 2, 3).should.deep.equal(new Vector(1, 1, 1))
 
     it 'scale(d)', ->
       v = new Vector(1, 2, 3)
@@ -71,6 +70,18 @@ describe 'Vector', ->
     it 'subVector(v)', ->
       v = new Vector(1, 2, 3)
       v.subVector(v).should.deep.equal(new Vector(0, 0, 0))
+
+    it 'cross()', ->
+      up = new Vector(0, 1, 0)
+      right = new Vector(1, 0, 0)
+      forward = new Vector(0, 0, -1)
+      up.cross(right).should.deep.equal(forward)
+
+    it 'mix(to, coefficient) - linear interpolation', ->
+      v = new Vector(0, 0, 0)
+      endpoint = new Vector(1, 1, 1)
+      v.mix(endpoint, 0.1).should.deep.equal(new Vector(0.1, 0.1, 0.1))
+      v.mix(endpoint, 0.9).should.deep.equal(new Vector(0.9, 0.9, 0.9))
 
   describe 'conversion', ->
 
